@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediSense AI — Health Assistant</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+
+  <body>
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="brand">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="MediSense" class="brand-logo" />
+            <div class="brand-text">
+              <span class="brand-name">MediSense</span>
+              <span class="brand-tag">AI Health Assistant</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="new-chat-btn" id="newChatBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          New Chat
+        </button>
+
+        <div class="sidebar-section-label">Chat History</div>
+        <div class="chat-list" id="chatList"></div>
+
+        <div class="sidebar-footer">
+          <div class="tech-badges">
+            <span>RAG</span>
+            <span>FAISS</span>
+            <span>Llama 3.3</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <main class="main">
+        <header class="topbar">
+          <button class="chats-toggle-btn mobile-only" id="chatsToggleBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+            </svg>
+            Chats
+          </button>
+
+          <div class="topbar-logo desktop-only">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="topbar-logo-img" />
+          </div>
+
+          <div class="topbar-title">
+            <h1 id="chatTitle">MediSense AI</h1>
+            <p>Your Personal AI Health Information Assistant</p>
+          </div>
+
+          <button class="delete-chat-btn" id="clearChatBtn" title="Delete this conversation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+              <path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+            </svg>
+            <span class="btn-label">Delete Chat</span>
+          </button>
+        </header>
+
+        <div class="disclaimer-bar">
+          ⚠ For educational purposes only — always consult a qualified doctor for diagnosis &amp; treatment.
+        </div>
+
+        <div class="chat-area" id="chatArea">
+          <div class="welcome" id="welcomeScreen">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="welcome-logo" />
+            <h2>How can I help you today?</h2>
+            <p>
+              Describe your symptoms or ask any health-related question.
+              Hindi mein pucho toh jawab bhi Hindi mein milega.
+            </p>
+
+            <div class="suggestions" id="suggestions">
+              <button class="suggestion-chip" data-prompt="I have fever, headache and body pain since 2 days">
+                🌡 Fever, headache &amp; body pain
+              </button>
+              <button class="suggestion-chip" data-prompt="What are the symptoms and prevention of diabetes?">
+                💉 Diabetes — symptoms &amp; prevention
+              </button>
+              <button class="suggestion-chip" data-prompt="Mujhe khansi, gale me dard aur sardi hai, kya karun?">
+                🤧 Khansi, gale me dard (Hindi)
+              </button>
+              <button class="suggestion-chip" data-prompt="How to maintain heart health and prevent heart disease?">
+                ❤️ Heart health &amp; prevention tips
+              </button>
+            </div>
+          </div>
+
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="input-area">
+          <div class="input-wrapper">
+            <textarea
+              id="questionInput"
+              rows="1"
+              placeholder="Apne symptoms ya health question likho... (English / Hindi)"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" title="Send message" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+              </svg>
+            </button>
+          </div>
+          <p class="input-hint">
+            <strong>Enter</strong> to send &nbsp;·&nbsp; <strong>Shift + Enter</strong> new line
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal-box">
+        <div class="modal-icon">🗑️</div>
+        <h3>Delete this chat?</h3>
+        <p>This conversation will be permanently removed. This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="modal-btn cancel" id="cancelDelete">Cancel</button>
+          <button class="modal-btn confirm" id="confirmDelete">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

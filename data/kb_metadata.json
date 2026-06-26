@@ -1,0 +1,18 @@
+{
+  "source_count": 12,
+  "chunk_count": 399,
+  "source_files": [
+    "data\\asthma_qrg.pdf",
+    "data\\common cold.pdf",
+    "data\\dehydration.pdf",
+    "data\\dengue.pdf",
+    "data\\diabetes.pdf",
+    "data\\food posining.pdf",
+    "data\\heatstroke.pdf",
+    "data\\hypertension.pdf",
+    "data\\malaria.pdf",
+    "data\\migraine.pdf",
+    "data\\pneumonia.pdf",
+    "data\\typhoid.pdf"
+  ]
+}
