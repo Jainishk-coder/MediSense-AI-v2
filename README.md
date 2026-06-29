@@ -1,81 +1,121 @@
-# MediSense AI
+<img width="1672" height="941" alt="architechture" src="https://github.com/user-attachments/assets/b10faa76-ab15-4f86-8efd-8643a4f629e4" /># 🩺 MediSense AI
 
-MediSense AI is a medical information chatbot built with Retrieval-Augmented Generation (RAG). It helps users understand symptoms, common conditions, prevention, safe self-care, and when they should consult a doctor.
+AI-Powered Healthcare Information Assistant built using Retrieval-Augmented Generation (RAG).
 
-This project is for educational use only. It does not replace professional medical advice, diagnosis, or treatment.
+## 📌 Overview
 
-## Features
+MediSense AI is a RAG-based healthcare information assistant that helps users understand possible health conditions based on their symptoms.
 
-- Symptom-aware health chatbot
-- English and Hindi/Hinglish response support
-- RAG pipeline with LangChain, FAISS, and HuggingFace embeddings
-- Groq Llama 3.3 powered answer generation
-- Expanded medical knowledge base from PDFs, TXT, and MD files
-- Emergency and doctor-visit triage badges
-- Chat history with SQLite
-- Responsive modern UI
-- Knowledge base status panel
-- Copy response action
+The system retrieves relevant medical information from a healthcare knowledge base and generates structured educational responses using a Large Language Model.
 
-## Tech Stack
+⚠️ This project is intended for educational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment.
 
-- Frontend: HTML, CSS, JavaScript
-- Backend: Python, Flask
-- AI/RAG: LangChain, FAISS, HuggingFace Embeddings, Groq API
-- Database: SQLite
+---
 
-## How It Works
+## 🚀 Features
 
-1. The user enters symptoms or a health question.
-2. Flask receives the message and detects language and care level.
-3. LangChain retrieves relevant chunks from the FAISS knowledge base.
-4. The retrieved context is passed to the LLM with a safe medical prompt.
-5. MediSense AI returns an educational answer with self-care and doctor-visit guidance.
-6. The conversation is saved locally in SQLite.
+- Symptom-based health analysis
+- Retrieval-Augmented Generation (RAG)
+- Context-aware medical information retrieval
+- AI-generated health insights
+- Structured and easy-to-understand responses
+- Modern responsive user interface
 
-## Project Structure
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Backend
+- Python
+- Flask
+
+### AI Stack
+- LangChain
+- FAISS Vector Database
+- HuggingFace Embeddings
+- Groq API
+- Llama 3.3 70B
+
+---
+
+## ⚙️ How It Works
+
+1. User enters symptoms through the web interface.
+2. Flask backend receives the query.
+3. LangChain retrieves relevant medical information from the FAISS vector database.
+4. Relevant healthcare context is passed to the LLM.
+5. Groq Llama 3.3 generates a contextual response.
+6. Structured healthcare information is displayed to the user.
+
+---
+
+## 🏗️ Architecture
+
+![Architecture](architechture.png)
+
+---
+
+## 📸 Screenshots
+
+### Home Page
+
+![Home Page](home.png)
+
+### Symptom Analysis
+
+![Analysis](analysis.png)
+
+---
+
+## 📂 Project Structure
 
 ```text
 MediSense-AI/
-  data/
-    health_guides/
-    pdfs/
-    kb_metadata.json
-  health_faiss_db/
-  static/
-    logo.svg
-    script.js
-    style.css
-  templates/
-    index.html
-  app.py
-  build_db.py
-  db.py
-  requirements.txt
-  README.md
+│
+├── data/
+├── health_faiss_db/
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+├── templates/
+│   └── index.html
+│
+├── app.py
+├── requirements.txt
+├── README.md
+└── LICENSE
 ```
 
-## Setup
+## 🔧 Installation
 
-Install dependencies:
+### Clone Repository
+
+```bash
+git clone https://github.com/Jainishk-coder/MediSense-AI.git
+cd MediSense-AI
+```
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
+### Create Environment Variable
+
 Create a `.env` file:
 
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
-Rebuild the knowledge base after adding or editing files inside `data/`:
-
-```bash
-python build_db.py
-```
-
-Run the app:
+### Run Application
 
 ```bash
 python app.py
@@ -87,34 +127,29 @@ Open:
 http://127.0.0.1:5000
 ```
 
-## Knowledge Base
+---
 
-The builder scans these formats anywhere under `data/`:
+## 🎯 Future Improvements
 
-- `.pdf`
-- `.txt`
-- `.md`
+- More healthcare knowledge sources
+- Better disease ranking system
+- Multi-language support
+- Chat history support
+- Cloud deployment
 
-The project includes disease PDFs plus expanded text guides for fever, cough, diabetes, hypertension, digestive issues, emergencies, pregnancy safety, child red flags, mental health, skin, kidney/urinary symptoms, and prevention.
+---
 
-## Safety Design
+## 👨‍💻 Author
 
-MediSense AI is designed to:
+**Jainish Kandoliya**
 
-- Avoid confirming diagnoses
-- Avoid prescribing medicines or dosages
-- Highlight emergency symptoms
-- Encourage doctor consultation for red flags
-- Ask follow-up questions when symptoms are incomplete
-
-## Author
-
-Jainish Kandoliya  
 Aspiring AI/ML Engineer | B.Tech CSE
 
 - LinkedIn: https://www.linkedin.com/in/kandoliya-jainish
 - GitHub: https://github.com/Jainishk-coder
 
-## License
+---
 
-MIT License
+## 📜 License
+
+This project is licensed under the MIT License.
