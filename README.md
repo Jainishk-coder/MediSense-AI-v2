@@ -1,4 +1,4 @@
-<img width="1672" height="941" alt="architechture" src="https://github.com/user-attachments/assets/b10faa76-ab15-4f86-8efd-8643a4f629e4" /># 🩺 MediSense AI
+# 🩺 MediSense AI
 
 AI-Powered Healthcare Information Assistant built using Retrieval-Augmented Generation (RAG).
 
@@ -66,11 +66,6 @@ The system retrieves relevant medical information from a healthcare knowledge ba
 
 ![Home Page](home.png)
 
-### Symptom Analysis
-
-![Analysis](analysis.png)
-
----
 
 ## 📂 Project Structure
 
