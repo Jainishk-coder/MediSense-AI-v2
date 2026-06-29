@@ -1,37 +1,28 @@
 # PDF Files for MediSense AI
 
-Apni **12 disease PDFs** yahan rakho:
+Place disease or health PDFs in either location:
 
-```
+```text
 data/
   diabetes.pdf
-  fever.pdf
-  ...
-```
+  pneumonia.pdf
 
-Ya subfolder mein:
-
-```
 data/pdfs/
-  diabetes.pdf
-  heart_disease.pdf
-  ...
+  heart_health.pdf
+  first_aid.pdf
 ```
 
-Dono jagah se scan hoga.
+The knowledge builder scans PDFs, TXT files, and MD files from the full `data/` folder.
 
-## Rebuild knowledge base
-
-PDFs add/update karne ke baad:
+After adding or updating knowledge files, run:
 
 ```bash
 python build_db.py
 python app.py
 ```
 
-Yeh script sirf **PDF files** use karega — purane txt guides ab include nahi honge.
+Important:
 
-## Important
-
-- PDF mein readable text hona chahiye (scanned image PDFs kaam nahi karenge bina OCR ke)
-- Har rebuild ke baad app restart karo
+- PDFs should contain selectable text.
+- Scanned image PDFs need OCR first.
+- Restart the Flask app after rebuilding the FAISS database.

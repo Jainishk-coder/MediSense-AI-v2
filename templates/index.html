@@ -3,45 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MediSense AI — Health Assistant</title>
+    <title>MediSense AI - Medical RAG Assistant</title>
     <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=final-dark-cockpit" />
   </head>
 
   <body>
     <div class="app">
       <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <div class="brand">
-            <img src="{{ url_for('static', filename='logo.svg') }}" alt="MediSense" class="brand-logo" />
-            <div class="brand-text">
-              <span class="brand-name">MediSense</span>
-              <span class="brand-tag">AI Health Assistant</span>
-            </div>
+        <div class="brand">
+          <img src="{{ url_for('static', filename='logo.svg') }}" alt="MediSense" class="brand-logo" />
+          <div class="brand-copy">
+            <div class="brand-name">MediSense AI</div>
+            <div class="brand-tag">Clinical RAG Chatbot</div>
           </div>
         </div>
 
-        <button class="new-chat-btn" id="newChatBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          New Chat
+        <button class="new-chat-btn" id="newChatBtn" type="button">
+          <span>+</span>
+          New Consultation
         </button>
 
-        <div class="sidebar-section-label">Chat History</div>
+        <div class="kb-card" id="kbCard">
+          <span class="pulse"></span>
+          <div>
+            <strong id="kbTitle">Knowledge Base</strong>
+            <small id="kbMeta">Checking sources...</small>
+          </div>
+        </div>
+
+        <div class="sidebar-label">Consultations</div>
         <div class="chat-list" id="chatList"></div>
 
-        <div class="sidebar-footer">
-          <div class="tech-badges">
-            <span>RAG</span>
+        <div class="side-panel">
+          <div class="side-panel-title">Built With</div>
+          <div class="tech-grid">
+            <span>Flask</span>
+            <span>LangChain</span>
             <span>FAISS</span>
-            <span>Llama 3.3</span>
+            <span>Groq</span>
           </div>
         </div>
       </aside>
@@ -50,97 +56,157 @@
 
       <main class="main">
         <header class="topbar">
-          <button class="chats-toggle-btn mobile-only" id="chatsToggleBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-            </svg>
-            Chats
-          </button>
+          <button class="mobile-menu" id="chatsToggleBtn" type="button">Chats</button>
 
-          <div class="topbar-logo desktop-only">
-            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="topbar-logo-img" />
-          </div>
-
-          <div class="topbar-title">
+          <div class="title-block">
             <h1 id="chatTitle">MediSense AI</h1>
-            <p>Your Personal AI Health Information Assistant</p>
+            <p>Medical guidance with retrieval, triage, and bilingual support.</p>
           </div>
 
-          <button class="delete-chat-btn" id="clearChatBtn" title="Delete this conversation">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6" />
-              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
-              <path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
-            </svg>
-            <span class="btn-label">Delete Chat</span>
-          </button>
-        </header>
-
-        <div class="disclaimer-bar">
-          ⚠ For educational purposes only — always consult a qualified doctor for diagnosis &amp; treatment.
-        </div>
-
-        <div class="chat-area" id="chatArea">
-          <div class="welcome" id="welcomeScreen">
-            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="welcome-logo" />
-            <h2>How can I help you today?</h2>
-            <p>
-              Describe your symptoms or ask any health-related question.
-              Hindi mein pucho toh jawab bhi Hindi mein milega.
-            </p>
-
-            <div class="suggestions" id="suggestions">
-              <button class="suggestion-chip" data-prompt="I have fever, headache and body pain since 2 days">
-                🌡 Fever, headache &amp; body pain
-              </button>
-              <button class="suggestion-chip" data-prompt="What are the symptoms and prevention of diabetes?">
-                💉 Diabetes — symptoms &amp; prevention
-              </button>
-              <button class="suggestion-chip" data-prompt="Mujhe khansi, gale me dard aur sardi hai, kya karun?">
-                🤧 Khansi, gale me dard (Hindi)
-              </button>
-              <button class="suggestion-chip" data-prompt="How to maintain heart health and prevent heart disease?">
-                ❤️ Heart health &amp; prevention tips
-              </button>
-            </div>
-          </div>
-
-          <div class="messages" id="messages"></div>
-        </div>
-
-        <div class="input-area">
-          <div class="input-wrapper">
-            <textarea
-              id="questionInput"
-              rows="1"
-              placeholder="Apne symptoms ya health question likho... (English / Hindi)"
-            ></textarea>
-            <button class="send-btn" id="sendBtn" title="Send message" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-              </svg>
+          <div class="topbar-actions">
+            <span class="status-pill">RAG Ready</span>
+            <button class="delete-chat-btn" id="clearChatBtn" type="button" title="Delete conversation">
+              Delete
             </button>
           </div>
-          <p class="input-hint">
-            <strong>Enter</strong> to send &nbsp;·&nbsp; <strong>Shift + Enter</strong> new line
-          </p>
+        </header>
+
+        <div class="workspace">
+          <div class="center-column">
+            <div class="safety-strip">
+              Educational assistant only. For diagnosis, medicine, treatment, or emergency symptoms, consult a qualified doctor.
+            </div>
+
+            <section class="chat-area" id="chatArea">
+              <div class="welcome" id="welcomeScreen">
+                <div class="welcome-hero">
+                  <div class="hero-copy">
+                    <div class="eyebrow">AI Medical Consultation Desk</div>
+                    <h2>MediSense is ready for your health question.</h2>
+                    <p>
+                      Share symptoms, medicines, reports, prevention doubts, or follow-up details.
+                      The assistant keeps the conversation in context and explains the safest next step.
+                    </p>
+
+                    <div class="hero-stats">
+                      <div>
+                        <strong>20</strong>
+                        <span>Medical Sources</span>
+                      </div>
+                      <div>
+                        <strong>458</strong>
+                        <span>RAG Chunks</span>
+                      </div>
+                      <div>
+                        <strong>2</strong>
+                        <span>Languages Supported</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="hero-visual" aria-hidden="true">
+                    <div class="monitor-card">
+                      <div class="monitor-top">
+                        <img src="{{ url_for('static', filename='logo.svg') }}" alt="" />
+                        <div>
+                          <strong>Live Care Scan</strong>
+                          <span>Context aware</span>
+                        </div>
+                      </div>
+                      <div class="signal-row">
+                        <span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                      <div class="monitor-grid">
+                        <div><b>Symptoms</b><small>Intake</small></div>
+                        <div><b>Safety</b><small>Red flags</small></div>
+                        <div><b>Care</b><small>Next steps</small></div>
+                        <div><b>Follow-up</b><small>Memory</small></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="triage-grid">
+                  <button class="suggestion-chip fever" data-prompt="I have fever, headache and body pain since 2 days">
+                    <strong>Fever Triage</strong>
+                    <span>Fever, headache, body pain</span>
+                  </button>
+                  <button class="suggestion-chip cough" data-prompt="Mujhe khansi, gale me dard aur sardi hai, kya karun?">
+                    <strong>Hinglish Care</strong>
+                    <span>Khansi, gala dard, sardi</span>
+                  </button>
+                  <button class="suggestion-chip prevent" data-prompt="What are diabetes symptoms and prevention tips?">
+                    <strong>Prevention Guide</strong>
+                    <span>Diabetes symptoms and habits</span>
+                  </button>
+                  <button class="suggestion-chip urgent" data-prompt="I have chest pain and difficulty breathing">
+                    <strong>Urgent Signs</strong>
+                    <span>Chest pain and breathing trouble</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="messages" id="messages"></div>
+            </section>
+
+            <footer class="input-area">
+              <div class="input-shell">
+                <label for="questionInput">Describe your symptoms, duration, age, severity, or ask a health question...</label>
+                <div class="input-wrapper">
+                  <textarea
+                    id="questionInput"
+                    rows="1"
+                    placeholder="Type your symptoms here... e.g., I have fever, headache and body pain since 2 days"
+                  ></textarea>
+                  <button class="send-btn" id="sendBtn" type="button" disabled>Send</button>
+                </div>
+                <div class="input-tags">
+                  <span>Ask in English or Hinglish</span>
+                  <span>Be specific for better results</span>
+                  <span>This is not a diagnosis tool</span>
+                </div>
+              </div>
+            </footer>
+          </div>
+
+          <aside class="care-rail">
+            <div class="rail-header">
+              <img src="{{ url_for('static', filename='logo.svg') }}" alt="" />
+              <div>
+                <strong>Care Navigator</strong>
+                <span>Your Health Companion</span>
+              </div>
+            </div>
+
+            <div class="rail-list">
+              <div><b>Symptom Intake</b><span>Smart symptom collection</span></div>
+              <div><b>Emergency Detection</b><span>Detects red flags instantly</span></div>
+              <div><b>Safe Guidance</b><span>Step-by-step advice</span></div>
+              <div><b>Home Care Tips</b><span>Personalized self-care</span></div>
+              <div><b>Follow-up Support</b><span>Understands your next reply</span></div>
+              <div><b>Bilingual Support</b><span>English and Hinglish</span></div>
+            </div>
+
+            <div class="system-active">
+              <strong>System Active</strong>
+              <span>Always here to help you stay safe</span>
+            </div>
+          </aside>
         </div>
       </main>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal-overlay" id="deleteModal">
       <div class="modal-box">
-        <div class="modal-icon">🗑️</div>
         <h3>Delete this chat?</h3>
-        <p>This conversation will be permanently removed. This action cannot be undone.</p>
+        <p>This consultation history will be permanently removed.</p>
         <div class="modal-actions">
-          <button class="modal-btn cancel" id="cancelDelete">Cancel</button>
-          <button class="modal-btn confirm" id="confirmDelete">Yes, Delete</button>
+          <button class="modal-btn cancel" id="cancelDelete" type="button">Cancel</button>
+          <button class="modal-btn confirm" id="confirmDelete" type="button">Delete</button>
         </div>
       </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}?v=final-dark-cockpit"></script>
   </body>
 </html>
